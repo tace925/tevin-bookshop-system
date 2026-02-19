@@ -1,0 +1,368 @@
+/* Unified styles.css for BSIS - Book Shop Inventory System */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f0f4f8;
+  color: #0f172a;
+  min-height: 100vh;
+  transition: background 0.3s, color 0.3s;
+}
+
+.dark {
+  background: #0f172a;
+  color: #f0f4f8;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100%;
+  background: white;
+  border-right: 1px solid #e2e8f0;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  z-index: 50;
+}
+
+.dark .sidebar {
+  background: #1e293b;
+  border-right-color: #475569;
+}
+
+.sidebar.active {
+  transform: translateX(0);
+}
+
+@media (min-width: 1024px) {
+  .sidebar {
+    transform: translateX(0);
+  }
+}
+
+.sidebar-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.dark .sidebar-header {
+  border-bottom-color: #475569;
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #1d4ed8;
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.dark .subtitle {
+  color: #94a3b8;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 1rem;
+}
+
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1rem;
+  color: #334155;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+}
+
+.dark .sidebar-nav a {
+  color: #cbd5e1;
+}
+
+.sidebar-nav a:hover {
+  background: #f0f4f8;
+  color: #1d4ed8;
+}
+
+.dark .sidebar-nav a:hover {
+  background: #475569;
+  color: #bfdbfe;
+}
+
+.sidebar-nav a.active {
+  background: #1d4ed8;
+  color: white;
+}
+
+/* Main Wrapper */
+.main-wrapper {
+  margin-left: 0;
+  transition: margin-left 0.3s;
+}
+
+@media (min-width: 1024px) {
+  .main-wrapper {
+    margin-left: 250px;
+  }
+}
+
+/* Topbar */
+.topbar {
+  background: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.dark .topbar {
+  background: #1e293b;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+.topbar-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.menu-toggle {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #334155;
+  cursor: pointer;
+}
+
+.dark .menu-toggle {
+  color: #cbd5e1;
+}
+
+.page-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.theme-toggle {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: #334155;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.dark .theme-toggle {
+  color: #cbd5e1;
+}
+
+.theme-toggle:hover {
+  background: #f0f4f8;
+}
+
+.dark .theme-toggle:hover {
+  background: #475569;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+}
+
+/* Content */
+.content {
+  max-width: 1400px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+
+.card {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  margin-bottom: 1.5rem;
+}
+
+.dark .card {
+  background: #1e293b;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* Supplies Page Specific */
+.form-container, .table-container {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  margin-bottom: 2rem;
+}
+
+.dark .form-container, .dark .table-container {
+  background: #1e293b;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+input, select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  transition: border-color 0.2s;
+}
+
+input:focus, select:focus {
+  border-color: #1d4ed8;
+}
+
+.dark input, .dark select {
+  background: #334155;
+  color: white;
+  border-color: #475569;
+}
+
+.btn-primary {
+  background: #1d4ed8;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-weight: 500;
+}
+
+.btn-primary:hover {
+  background: #1e40af;
+}
+
+.btn-danger {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-danger:hover {
+  background: #dc2626;
+}
+
+#searchInput {
+  width: 100%;
+  max-width: 500px;
+  padding: 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.dark #searchInput {
+  background: #334155;
+  color: white;
+  border-color: #475569;
+}
+
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-container th, .table-container td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.dark .table-container th, .dark .table-container td {
+  border-bottom-color: #475569;
+}
+
+.table-container th {
+  background: #f8fafc;
+  font-weight: 600;
+}
+
+.dark .table-container th {
+  background: #334155;
+}
+
+.no-data {
+  text-align: center;
+  padding: 2rem;
+  color: #64748b;
+}
+
+.dark .no-data {
+  color: #94a3b8;
+}
+
+/* Custom Notification Toast (pop-down) */
+.toast {
+  position: fixed;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #22c55e;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: top 0.3s ease;
+  z-index: 1000;
+}
+
+.toast.error {
+  background: #ef4444;
+}
+
+.toast.show {
+  top: 20px;
+}

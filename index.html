@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BSIS - Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h1 class="logo">BSIS</h1>
+      <p class="subtitle">Book Shop Inventory System</p>
+    </div>
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="index.html" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a href="supplies.html"><i class="fas fa-box-open"></i> Supplies</a></li>
+        <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-container">
+        <button class="menu-toggle" id="menu-btn">
+          <i class="fas fa-bars"></i>
+        </button>
+        <h2 class="page-title">Dashboard</h2>
+        <div class="topbar-right">
+          <button class="theme-toggle" id="theme-toggle">
+            <i class="fas fa-moon"></i>
+          </button>
+          <div class="user-profile">
+            <img src="images/tevin.jpg" alt="Tevin" class="avatar">
+            <span>Tevin</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="content">
+      <h1>Welcome to BSIS</h1>
+      <div class="card">
+        <h2>Inventory Overview</h2>
+        <p>Total Books: <strong>1,500</strong></p>
+        <p>Low Stock Items: <strong>12</strong></p>
+        <p>Categories: <strong>8</strong></p>
+      </div>
+      <div class="card">
+        <h2>Recent Supplies</h2>
+        <ul>
+          <li>"Atomic Habits" by James Clear - 50 copies added</li>
+          <li>"The Alchemist" by Paulo Coelho - 30 copies added</li>
+        </ul>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Mobile sidebar toggle
+    document.getElementById('menu-btn').addEventListener('click', () => {
+      document.getElementById('sidebar').classList.toggle('active');
+    });
+
+    // Dark mode toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    themeToggle.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    if (localStorage.getItem('theme') === 'dark' || window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      html.classList.add('dark');
+    }
+
+    // Auto-active sidebar
+    document.addEventListener('DOMContentLoaded', () => {
+      const current = window.location.pathname.split('/').pop() || 'index.html';
+      document.querySelectorAll('.sidebar-nav a').forEach(link => {
+        if (link.getAttribute('href') === current) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

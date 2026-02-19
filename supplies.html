@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BSIS - Supplies</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h1 class="logo">BSIS</h1>
+      <p class="subtitle">Book Shop Inventory System</p>
+    </div>
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="index.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a href="supplies.html" class="active"><i class="fas fa-box-open"></i> Supplies</a></li>
+        <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-container">
+        <button class="menu-toggle" id="menu-btn">
+          <i class="fas fa-bars"></i>
+        </button>
+        <h2 class="page-title">Supplies Records</h2>
+        <div class="topbar-right">
+          <button class="theme-toggle" id="theme-toggle">
+            <i class="fas fa-moon"></i>
+          </button>
+          <div class="user-profile">
+            <img src="images/tevin.jpg" alt="Tevin" class="avatar">
+            <span>Tevin</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="content">
+      <h1>Manage Book Supplies</h1>
+
+      <!-- Add Supply Form -->
+      <div class="form-container">
+        <h2>Add New Book</h2>
+        <form id="supplyForm">
+          <div class="form-grid">
+            <div>
+              <label for="title">Book Title *</label>
+              <input type="text" id="title" required placeholder="e.g. Atomic Habits">
+            </div>
+            <div>
+              <label for="author">Author *</label>
+              <input type="text" id="author" required placeholder="e.g. James Clear">
+            </div>
+            <div>
+              <label for="quantity">Quantity *</label>
+              <input type="number" id="quantity" required min="1" placeholder="e.g. 50">
+            </div>
+            <div>
+              <label for="price">Price (KES) *</label>
+              <input type="number" id="price" required min="0" step="0.01" placeholder="e.g. 1500">
+            </div>
+            <div>
+              <label for="category">Category *</label>
+              <select id="category" required>
+                <option value="">Select...</option>
+                <option value="Fiction">Fiction</option>
+                <option value="Non-Fiction">Non-Fiction</option>
+                <option value="Sci-Fi">Sci-Fi</option>
+                <option value="Self-Help">Self-Help</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary">
+            <i class="fas fa-plus"></i> Add Book
+          </button>
+        </form>
+      </div>
+
+      <!-- Supplies List -->
+      <div class="table-container">
+        <h2>Book List</h2>
+        <input type="text" id="searchInput" placeholder="Search by title, author, or category...">
+        <table>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Author</th>
+              <th>Quantity</th>
+              <th>Price (KES)</th>
+              <th>Category</th>
+              <th>Added On</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="supplyBody"></tbody>
+        </table>
+        <div id="noData" class="no-data">No books added yet.</div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Custom Toast Notification -->
+  <div id="toast" class="toast"></div>
+
+  <script>
+    // Sidebar, dark mode, active link (same as before)
+    document.getElementById('menu-btn').addEventListener('click', () => {
+      document.getElementById('sidebar').classList.toggle('active');
+    });
+
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    themeToggle.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    if (localStorage.getItem('theme') === 'dark' || window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      html.classList.add('dark');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const current = window.location.pathname.split('/').pop() || 'index.html';
+      document.querySelectorAll('.sidebar-nav a').forEach(link => {
+        if (link.getAttribute('href') === current) {
+          link.classList.add('active');
+        }
+      });
+    });
+
+    // Supplies Logic
+    const form = document.getElementById('supplyForm');
+    const tbody = document.getElementById('supplyBody');
+    const searchInput = document.getElementById('searchInput');
+    const noData = document.getElementById('noData');
+    const toast = document.getElementById('toast');
+
+    let supplies = JSON.parse(localStorage.getItem('bsis_supplies')) || [];
+
+    function saveSupplies() {
+      localStorage.setItem('bsis_supplies', JSON.stringify(supplies));
+    }
+
+    function showToast(message, type = 'success') {
+      toast.textContent = message;
+      toast.className = `toast ${type}`;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    function renderSupplies(filter = '') {
+      tbody.innerHTML = '';
+      const filtered = supplies.filter(s => 
+        s.title.toLowerCase().includes(filter.toLowerCase()) ||
+        s.author.toLowerCase().includes(filter.toLowerCase()) ||
+        s.category.toLowerCase().includes(filter.toLowerCase())
+      );
+
+      if (filtered.length === 0) {
+        noData.style.display = 'block';
+        return;
+      }
+      noData.style.display = 'none';
+
+      filtered.forEach((supply, index) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${supply.title}</td>
+          <td>${supply.author}</td>
+          <td>${supply.quantity}</td>
+          <td>${supply.price}</td>
+          <td>${supply.category}</td>
+          <td>${supply.date}</td>
+          <td><button class="btn-danger" onclick="deleteSupply(${index})">Delete</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function addSupply(e) {
+      e.preventDefault();
+      const supply = {
+        title: document.getElementById('title').value.trim(),
+        author: document.getElementById('author').value.trim(),
+        quantity: document.getElementById('quantity').value,
+        price: document.getElementById('price').value,
+        category: document.getElementById('category').value,
+        date: new Date().toLocaleDateString('en-KE')
+      };
+
+      supplies.push(supply);
+      saveSupplies();
+      renderSupplies();
+      form.reset();
+      showToast('Book added successfully!');
+    }
+
+    function deleteSupply(index) {
+      if (confirm('Delete this book supply?')) {
+        supplies.splice(index, 1);
+        saveSupplies();
+        renderSupplies(searchInput.value);
+        showToast('Book deleted successfully!', 'error');
+      }
+    }
+
+    form.addEventListener('submit', addSupply);
+    searchInput.addEventListener('input', () => renderSupplies(searchInput.value));
+
+    renderSupplies();
+  </script>
+</body>
+</html>
